@@ -209,32 +209,39 @@ def bucketTeams(df):#Take the swiss rankings and bucket teams into their releven
 
 
 
-def pointsByCurrentRankings(numberOfTeams,buckets,sortedPoints):#allocates BUEC Points, given bucketed Swiss rankings
-
+def pointsByCurrentRankings(numberOfTeams,buckets,sortedPoints, regional = False):#allocates BUEC Points, given bucketed Swiss rankings
     ellTeams = elligibleTeams(numberOfTeams)
     print(ellTeams)
     pointsSum = {}
     counter = 0
     for bucket in buckets:
-        if counter < ellTeams:
+        if counter < ellTeams:#only award points to elligible teams
             temp = 0
-            for team in bucket:
+            for team in bucket:#award points to teams in bucket
                 counter +=1
-                if counter <= 192:
+                if regional:
+                    counter +=1
+                if counter <= 192:#if there are still points available to be given (occurs when there are ties that make elligible teams > 192)
                     temp += sortedPoints.pop(0)
-                
-            temp = temp/len(bucket) #average
+                    if regional:
+                        temp += sortedPoints.pop(0)
+            if regional:
+                temp = temp/(len(bucket)*2)#if regional, avg over 2x the size
+            else:
+                temp = temp/len(bucket) #average
             for team in bucket:
                 pointsSum[team] = pointsSum.setdefault(team,0) + temp
         print(counter)    
     return pointsSum
 
 
-def gamePointsByCurrentRankings(sourceDir, outDir):#runs the pointsByCurrentRankings algorithm
+def gamePointsByCurrentRankings(sourceDir, outDir, regional = False):#runs the pointsByCurrentRankings algorithm
     
     #loading data, and making the custom points allocation table
     df = loadDF(sourceDir)
     numOfTeams = numberOfTeams(df)
+    if regional:#if regional leagues, we need to double the num of teams
+        numOfTeams = numOfTeams * 2
     print(numOfTeams)
     reducedDict = {}
     for i in range(192):
@@ -242,7 +249,7 @@ def gamePointsByCurrentRankings(sourceDir, outDir):#runs the pointsByCurrentRank
     sortedPoints = sortAndReducePointsTable(numOfTeams,reducedDict,pointsMultiplier(numOfTeams))
 
     #allocating points given the swiss rankings
-    uniPoints = pointsByCurrentRankings(numOfTeams,bucketTeams(df),sortedPoints)
+    uniPoints = pointsByCurrentRankings(numOfTeams,bucketTeams(df),sortedPoints, regional)
     
     #printing and saving the points table for that game
     uniPointsFrame = pd.DataFrame.from_dict(uniPoints, orient = "index", columns = ["Points"])
@@ -255,14 +262,15 @@ def gamePointsByCurrentRankings(sourceDir, outDir):#runs the pointsByCurrentRank
     
 #data directories (can update the week num to save new set of data for new week)    
 week = "1"
-inputs = [str("Ow/Ow_week" + week + ".csv"),"R6/R6_week"+ week +".csv","Dota/Dota_week" + week + ".csv", "Val/Val_week" + week + ".csv", "CS/CS_week" + week+ ".csv"]
-outputs = ["/Ow/Οw_week" + week + "_currentRankings.csv","R6/R6_week" + week + "_currentRankings.csv","Dota/Dota_week" + week + "_currentRankings.csv", "Val/Val_week" + week + "_currentRankings.csv", "CS/CS_week" + week + "_currentRankings.csv"]
-games = ["Overwatch", "R6: Siege", "DOTA 2", "VALORANT", "CS:GO"]
+inputs = [str("Ow/Ow_week" + week + ".csv"),"R6/R6_week"+ week +".csv","Dota/Dota_week" + week + ".csv", "Val/Val_week" + week + ".csv", "CS/CS_week" + week+ ".csv", "RL/RLN_week" + week+ ".csv", "RL/RLS_week" + week+ ".csv", "LOL/LOLN_week" + week+ ".csv", "LOL/LOLS_week" + week+ ".csv"]
+outputs = ["/Ow/Οw_week" + week + "_currentRankings.csv","R6/R6_week" + week + "_currentRankings.csv","Dota/Dota_week" + week + "_currentRankings.csv", "Val/Val_week" + week + "_currentRankings.csv", "CS/CS_week" + week + "_currentRankings.csv", "RL/RLN_week" + week + "_currentRankings.csv", "RL/RLS_week" + week + "_currentRankings.csv",  "LOL/LOLN_week" + week + "_currentRankings.csv", "LOL/LOLS_week" + week + "_currentRankings.csv"]
+games = ["Overwatch", "R6: Siege", "DOTA 2", "VALORANT", "CS:GO", "Rocket League", "Rocket League", "League of Legends", "League of Legends"]
+regionalBitmap = [False,False,False,False,False,True,True,True,True]
 
 
 #Calculate Points tables for each game/dataset
 for i in range(len(inputs)):
-    gamePointsByCurrentRankings("data/"+inputs[i], "data/"+outputs[i])
+    gamePointsByCurrentRankings("data/"+inputs[i], "data/"+outputs[i], regionalBitmap[i])
 
 
 #Sum the point tables across each game into a "total points table"
@@ -284,16 +292,31 @@ totalPointsByCurrentRanking.to_csv("data/total/total_week1_currentRankings.csv")
 
 #Merging all of the points table into one big table with totals, and each individual game total
 totalPointsByCurrentRanking = totalPointsByCurrentRanking.rename(columns = {"Points": "Total Points"})
+case = True
 for i in range(len(inputs)):
     temp = pd.read_csv("data/" + outputs[i],index_col=0)
     temp = temp.rename(columns={"Points": games[i]})
     temp = temp.rename_axis( index = "University" )
 
-    totalPointsByCurrentRanking = totalPointsByCurrentRanking.merge(temp, how = "left", left_on = "University", right_on = "University")
+    if regionalBitmap[i]:#if regional league
+        if case:
+            #combine the North and south tables
+            temp2 = pd.read_csv("data/" + outputs[i+1],index_col=0)
+            temp2 = temp2.rename(columns={"Points": games[i]})
+            temp2 = temp2.rename_axis( index = "University" )
+            temp = pd.concat([temp,temp2], axis = 0, sort = False)
+            temp = temp.rename_axis( index = "University" )
+            
+            totalPointsByCurrentRanking = totalPointsByCurrentRanking.merge(temp, how = "outer", left_on = ["University"], right_on = ["University"])
+            case = False
+        else:
+            case = True
+    else:
+        totalPointsByCurrentRanking = totalPointsByCurrentRanking.merge(temp, how = "outer", left_on = "University", right_on = "University")
 
 
 print(totalPointsByCurrentRanking)
 totalPointsByCurrentRanking.to_csv("data/total/week1_all_games.csv")
 
 
-#todo move points calculator into separate file, and algos into separate files
+#todo move points allocation calculator into separate file, and algos into separate files
