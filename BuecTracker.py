@@ -142,7 +142,7 @@ reducedPoints = makeReducedPoints()
 
 import pandas as pd
 import numpy as np
-def numberOfTeams(df):
+def numberOfTeams(df):#Calculate number of teams (by ignoring NONE entries used to denote a different swiss division
     df2 = df.copy(deep=True)
     df2.dropna(axis = 0, how = "any",inplace=True)
     numberOfTeams = (len(df2.index))
@@ -237,8 +237,10 @@ def gamePointsByCurrentRankings(sourceDir, outDir):
         reducedDict[reducedPoints[i]] = points[i]
     sortedPoints = sortAndReducePointsTable(numOfTeams,reducedDict,pointsMultiplier(numOfTeams))
 
+    
     uniPoints = pointsByCurrentRankings(numOfTeams,bucketTeams(df),sortedPoints)
     uniPointsFrame = pd.DataFrame.from_dict(uniPoints, orient = "index", columns = ["Points"])
+    nniPointsFrame = uniPointsFrame.rename_axis( index = "University" )
     uniPointsFrame = uniPointsFrame.sort_values(by = "Points", ascending = False)
 
     print(uniPointsFrame)
@@ -247,7 +249,7 @@ def gamePointsByCurrentRankings(sourceDir, outDir):
 week = "1"
 inputs = [str("Ow/Ow_week" + week + ".csv"),"R6/R6_week"+ week +".csv","Dota/Dota_week" + week + ".csv", "Val/Val_week" + week + ".csv", "CS/CS_week" + week+ ".csv"]
 outputs = ["/Ow/Οw_week" + week + "_currentRankings.csv","R6/R6_week" + week + "_currentRankings.csv","Dota/Dota_week" + week + "_currentRankings.csv", "Val/Val_week" + week + "_currentRankings.csv", "CS/CS_week" + week + "_currentRankings.csv"]
- 
+games = ["Overwatch", "R6: Siege", "DOTA 2", "VALORANT", "CS:GO"]
 
 for i in range(len(inputs)):
     gamePointsByCurrentRankings("data/"+inputs[i], "data/"+outputs[i])
@@ -261,8 +263,19 @@ for i in range(1,len(inputs)):
 totalPointsByCurrentRanking = totalPointsByCurrentRanking.sort_values(by = "Points", ascending = False)
 print(totalPointsByCurrentRanking)
 
+totalPointsByCurrentRanking = totalPointsByCurrentRanking.rename_axis( index = "University" )
 totalPointsByCurrentRanking.to_csv("data/total/total_week1_currentRankings.csv")
+totalPointsByCurrentRanking = totalPointsByCurrentRanking.rename(columns = {"Points": "Total Points"})
+
+for i in range(len(inputs)):
+    temp = pd.read_csv("data/" + outputs[i],index_col=0)
+    temp = temp.rename(columns={"Points": games[i]})
+    temp = temp.rename_axis( index = "University" )
+
+    totalPointsByCurrentRanking = totalPointsByCurrentRanking.merge(temp, how = "left", left_on = "University", right_on = "University")
 
 
+print(totalPointsByCurrentRanking)
+totalPointsByCurrentRanking.to_csv("data/total/week1_all_games.csv")
 #todo output totals into one weekly csv
 #todo move points calculator into separate file, and algos into separate files
