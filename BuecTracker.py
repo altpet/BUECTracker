@@ -261,9 +261,9 @@ def gamePointsByCurrentRankings(sourceDir, outDir, regional = False):#runs the p
     
     
 #data directories (can update the week num to save new set of data for new week)    
-week = "1"
-inputs = [str("Ow/Ow_week" + week + ".csv"),"R6/R6_week"+ week +".csv","Dota/Dota_week" + week + ".csv", "Val/Val_week" + week + ".csv", "CS/CS_week" + week+ ".csv", "RL/RLN_week" + week+ ".csv", "RL/RLS_week" + week+ ".csv", "LOL/LOLN_week" + week+ ".csv", "LOL/LOLS_week" + week+ ".csv"]
-outputs = ["/Ow/Οw_week" + week + "_currentRankings.csv","R6/R6_week" + week + "_currentRankings.csv","Dota/Dota_week" + week + "_currentRankings.csv", "Val/Val_week" + week + "_currentRankings.csv", "CS/CS_week" + week + "_currentRankings.csv", "RL/RLN_week" + week + "_currentRankings.csv", "RL/RLS_week" + week + "_currentRankings.csv",  "LOL/LOLN_week" + week + "_currentRankings.csv", "LOL/LOLS_week" + week + "_currentRankings.csv"]
+week = "2"
+inputs = [str("Ow/Ow_week1.csv"),"R6/R6_week1.csv","Dota/Dota_week" + week + ".csv", "Val/Val_week" + week + ".csv", "CS/CS_week" + week+ ".csv", "RL/RLN_week" + week+ ".csv", "RL/RLS_week" + week+ ".csv", "LOL/LOLN_week" + week+ ".csv", "LOL/LOLS_week" + week+ ".csv"]
+outputs = ["/Ow/Οw_week1_currentRankings.csv","R6/R6_week1_currentRankings.csv","Dota/Dota_week" + week + "_currentRankings.csv", "Val/Val_week" + week + "_currentRankings.csv", "CS/CS_week" + week + "_currentRankings.csv", "RL/RLN_week" + week + "_currentRankings.csv", "RL/RLS_week" + week + "_currentRankings.csv",  "LOL/LOLN_week" + week + "_currentRankings.csv", "LOL/LOLS_week" + week + "_currentRankings.csv"]
 games = ["Overwatch", "R6: Siege", "DOTA 2", "VALORANT", "CS:GO", "Rocket League", "Rocket League", "League of Legends", "League of Legends"]
 regionalBitmap = [False,False,False,False,False,True,True,True,True]
 
@@ -274,7 +274,7 @@ for i in range(len(inputs)):
 
 
 #Sum the point tables across each game into a "total points table"
-totalPointsByCurrentRanking = pd.read_csv("data/Ow/Οw_week1_currentRankings.csv",index_col=0)
+totalPointsByCurrentRanking = pd.read_csv("data/Ow/Οw_week1_currentRankings.csv",index_col=0)#manually change 
 for i in range(1,len(inputs)):
     b = pd.read_csv("data/" + outputs[i],index_col=0)
     totalPointsByCurrentRanking = totalPointsByCurrentRanking.add(b,fill_value=0)
@@ -283,7 +283,7 @@ for i in range(1,len(inputs)):
 totalPointsByCurrentRanking = totalPointsByCurrentRanking.sort_values(by = "Points", ascending = False)
 totalPointsByCurrentRanking = totalPointsByCurrentRanking.rename_axis( index = "University" )
 print(totalPointsByCurrentRanking)
-totalPointsByCurrentRanking.to_csv("data/total/total_week1_currentRankings.csv")
+totalPointsByCurrentRanking.to_csv("data/total/total_week"+week+"_currentRankings.csv")
 
 
 
@@ -316,7 +316,7 @@ for i in range(len(inputs)):
 
 
 print(totalPointsByCurrentRanking)
-totalPointsByCurrentRanking.to_csv("data/total/week1_all_games.csv")
+totalPointsByCurrentRanking.to_csv("data/total/week"+week+"_all_games.csv")
 
 
 #todo move points allocation calculator into separate file, and algos into separate files

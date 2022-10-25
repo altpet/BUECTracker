@@ -63,15 +63,18 @@ def scrapeGame(url, outDir):
 
     table.to_csv(outDir,columns = ["Team 1","University"])
 
-#scrapeGame("https://tournaments.nse.gg/tournaments/overwatch-winter-22/stage-1#round-5342", "data/Ow/Ow_week1.csv") #camdu punters to cam
-#scrapeGame("https://tournaments.nse.gg/tournaments/rainbow-6-siege-winter-22/stage-1#round-5341", "data/R6/R6_week1.csv")
-#scrapeGame("https://tournaments.nse.gg/tournaments/dota-2-winter-22/stage-1#round-5308", "data/Dota/Dota_week1.csv")
-#scrapeGame("https://tournaments.nse.gg/tournaments/valorant-winter-22/stage-1#round-5311", "data/Val/Val_week1.csv") #wattare u doing to watt
-#scrapeGame("https://tournaments.nse.gg/tournaments/csgo-winter-22/stage-1#round-5307", "data/CS/CS_week1.csv") #remove bye match loser
-#scrapeGame("https://tournaments.nse.gg/tournaments/rocket-league-winter-22-north/stage-1#round-5328", "data/RL/RLN_week1.csv") 
-#scrapeGame("https://tournaments.nse.gg/tournaments/rocket-league-winter-22-south/stage-1#round-5330", "data/RL/RLS_week1.csv")
-#scrapeGame("https://tournaments.nse.gg/tournaments/league-of-legends-winter-22-north/stage-1#round-5326", "data/LOL/LOLN_week1.csv") #Washington redskins to nott trent, remove 2match bye loser
-#scrapeGame("https://tournaments.nse.gg/tournaments/league-of-legends-winter-22-south/stage-1#round-5327", "data/LOL/LOLS_week1.csv")
+
+w = "2"
+
+#scrapeGame("https://tournaments.nse.gg/tournaments/overwatch-winter-22/stage-1#round-5342", "data/Ow/Ow_week"+w+".csv") #camdu punters to cam
+#scrapeGame("https://tournaments.nse.gg/tournaments/rainbow-6-siege-winter-22/stage-1#round-5341", "data/R6/R6_week"+w+".csv")
+#scrapeGame("https://tournaments.nse.gg/tournaments/dota-2-winter-22/stage-1#round-5308", "data/Dota/Dota_week"+w+".csv")
+#scrapeGame("https://tournaments.nse.gg/tournaments/valorant-winter-22/stage-1#round-5311", "data/Val/Val_week"+w+".csv") #wattare u doing to watt
+#scrapeGame("https://tournaments.nse.gg/tournaments/csgo-winter-22/stage-1#round-5307", "data/CS/CS_week"+w+".csv") #remove bye match loser
+#scrapeGame("https://tournaments.nse.gg/tournaments/rocket-league-winter-22-north/stage-1#round-5328", "data/RL/RLN_week"+w+".csv") 
+#scrapeGame("https://tournaments.nse.gg/tournaments/rocket-league-winter-22-south/stage-1#round-5330", "data/RL/RLS_week"+w+".csv")
+#scrapeGame("https://tournaments.nse.gg/tournaments/league-of-legends-winter-22-north/stage-1#round-5326", "data/LOL/LOLN_week"+w+".csv") #Washington redskins to nott trent, remove 2match bye loser
+#scrapeGame("https://tournaments.nse.gg/tournaments/league-of-legends-winter-22-south/stage-1#round-5327", "data/LOL/LOLS_week"+w+".csv")
 
 
 #todo: smash, tft matches? multiversus
