@@ -1,4 +1,4 @@
-
+import numpy as np
 def makePoints():#Make the generic points table
     points = [150,140,135,130,127,124,121,118]
     for i in range(116,48,-2):
@@ -136,29 +136,31 @@ def makeReducedPoints():#Make the reduced points table
     
     return reducedPoints
 
-def pointsMultiplier(numberOfTeams):#Whether the game receives a point penalty (eg too few teams) #needs implementations for diff types of games
+def pointsMultiplier(numberOfTeams,cup = False, singleAndTeamsEvent = False, singlePlayerChamp = False, teamChamp = False  ):#Whether the game receives a point penalty (eg too few teams) #needs implementations for diff types of games
     pointsMultiplier = 1
-    singlePlayerChamp = False
-    if singlePlayerChamp == True:
+    if singlePlayerChamp:
         pointsMultiplier *= 1/2
     
-    singleAndTeamsEvent = False
-    if singleAndTeamsEvent == True:
-        single = False
-        team = False
-        if single == True:
+    if singleAndTeamsEvent:
+        if singlePlayerChamp:
             pointsMultiplier *= 4/5
-        elif teams == True:
+        elif teamChamp:
             pointsMultiplier *=2/3
     
+        pointsMultiplier *= 1/3
     
     elif numberOfTeams<32:
         pointsMultiplier *= 2/3
         
+    if cup:
+        print("cup")
+        pointsMultiplier *= 1/3
+        
+        
     return pointsMultiplier
 
 def sortAndReducePointsTable(numberOfTeams,reducedDict,pointsMultiplier):#Creates a custom points allocation table based on the number of teams participating
-         
+    print(pointsMultiplier)     
     if numberOfTeams<192:
         for i in range(numberOfTeams,192,1):
             reducedDict.pop(i+1)
@@ -168,7 +170,9 @@ def sortAndReducePointsTable(numberOfTeams,reducedDict,pointsMultiplier):#Create
         sortedPoints.append(reducedDict[i])
 
     sortedPoints.sort(reverse=True)
-    sortedPoints = sortedPoints * pointsMultiplier
+    print(sortedPoints)
+    sortedPoints = np.multiply(sortedPoints, pointsMultiplier)
+    sortedPoints = sortedPoints.tolist()
     return sortedPoints
 
 points = makePoints()
@@ -207,7 +211,18 @@ def bucketTeams(df):#Take the swiss rankings and bucket teams into their releven
     buckets.append(tempBucket)
     return buckets
 
-
+def doNothing(df):#Don't bucket teams, just order as they are
+    unis = df["University"]
+    buckets = []
+    tempBucket = []
+    
+    for i in unis:
+        
+        tempBucket = []
+        tempBucket.append(i)
+        buckets.append(tempBucket)
+    return buckets
+    
 
 def pointsByCurrentRankings(numberOfTeams,buckets,sortedPoints, regional = False):#allocates BUEC Points, given bucketed Swiss rankings
     ellTeams = elligibleTeams(numberOfTeams)
@@ -235,7 +250,8 @@ def pointsByCurrentRankings(numberOfTeams,buckets,sortedPoints, regional = False
     return pointsSum
 
 
-def gamePointsByCurrentRankings(sourceDir, outDir, regional = False):#runs the pointsByCurrentRankings algorithm
+
+def gamePointsByCurrentRankings(sourceDir, outDir, orderingAlg, regional = False, cup = False ):#runs the pointsByCurrentRankings algorithm
     
     #loading data, and making the custom points allocation table
     df = loadDF(sourceDir)
@@ -246,10 +262,10 @@ def gamePointsByCurrentRankings(sourceDir, outDir, regional = False):#runs the p
     reducedDict = {}
     for i in range(192):
         reducedDict[reducedPoints[i]] = points[i]
-    sortedPoints = sortAndReducePointsTable(numOfTeams,reducedDict,pointsMultiplier(numOfTeams))
+    sortedPoints = sortAndReducePointsTable(numOfTeams,reducedDict,pointsMultiplier(numOfTeams,cup))
 
     #allocating points given the swiss rankings
-    uniPoints = pointsByCurrentRankings(numOfTeams,bucketTeams(df),sortedPoints, regional)
+    uniPoints = pointsByCurrentRankings(numOfTeams,orderingAlg(df),sortedPoints, regional)
     
     #printing and saving the points table for that game
     uniPointsFrame = pd.DataFrame.from_dict(uniPoints, orient = "index", columns = ["Points"])
@@ -258,6 +274,7 @@ def gamePointsByCurrentRankings(sourceDir, outDir, regional = False):#runs the p
     print(uniPointsFrame)
     uniPointsFrame.to_csv(outDir)
     
+
     
     
 #data directories (can update the week num to save new set of data for new week)    
@@ -268,9 +285,14 @@ games = ["Overwatch", "R6: Siege", "DOTA 2", "VALORANT", "CS:GO", "Rocket League
 regionalBitmap = [False,False,False,False,False,True,True,True,True]
 
 
+
 #Calculate Points tables for each game/dataset
 for i in range(len(inputs)):
-    gamePointsByCurrentRankings("data/"+inputs[i], "data/"+outputs[i], regionalBitmap[i])
+    gamePointsByCurrentRankings("data/"+inputs[i], "data/"+outputs[i], bucketTeams, regionalBitmap[i])
+
+#Calculate Points tables for each cup
+gamePointsByCurrentRankings("data/Fortnite/Fortnite Week 1.csv", "data/Fortnite/Fortnite_week1_currentRankings.csv", doNothing, False, True)
+
 
 
 #Sum the point tables across each game into a "total points table"
@@ -278,6 +300,11 @@ totalPointsByCurrentRanking = pd.read_csv("data/Ow/Οw_week1_currentRankings.csv
 for i in range(1,len(inputs)):
     b = pd.read_csv("data/" + outputs[i],index_col=0)
     totalPointsByCurrentRanking = totalPointsByCurrentRanking.add(b,fill_value=0)
+
+
+#cups
+b = pd.read_csv("data/Fortnite/Fortnite_week1_currentRankings.csv",index_col=0)
+totalPointsByCurrentRanking = totalPointsByCurrentRanking.add(b,fill_value=0)
 
 
 totalPointsByCurrentRanking = totalPointsByCurrentRanking.sort_values(by = "Points", ascending = False)
@@ -314,9 +341,19 @@ for i in range(len(inputs)):
     else:
         totalPointsByCurrentRanking = totalPointsByCurrentRanking.merge(temp, how = "outer", left_on = "University", right_on = "University")
 
+temp = pd.read_csv("data/Fortnite/Fortnite_week1_currentRankings.csv",index_col=0)
+temp = temp.rename(columns={"Points": "Fortnite"})
+temp = temp.rename_axis( index = "University" )
+totalPointsByCurrentRanking = totalPointsByCurrentRanking.merge(temp, how = "outer", left_on = "University", right_on = "University")
+
+
 
 print(totalPointsByCurrentRanking)
 totalPointsByCurrentRanking.to_csv("data/total/week"+week+"_all_games.csv")
 
 
 #todo move points allocation calculator into separate file, and algos into separate files
+
+#make pgm for total combinations, and time series
+
+#make cups non 1-off
