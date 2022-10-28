@@ -279,8 +279,8 @@ def gamePointsByCurrentRankings(sourceDir, outDir, orderingAlg, regional = False
     
 #data directories (can update the week num to save new set of data for new week)    
 week = "2"
-inputs = [str("Ow/Ow_week1.csv"),"R6/R6_week1.csv","Dota/Dota_week" + week + ".csv", "Val/Val_week" + week + ".csv", "CS/CS_week" + week+ ".csv", "RL/RLN_week" + week+ ".csv", "RL/RLS_week" + week+ ".csv", "LOL/LOLN_week" + week+ ".csv", "LOL/LOLS_week" + week+ ".csv"]
-outputs = ["/Ow/Οw_week1_currentRankings.csv","R6/R6_week1_currentRankings.csv","Dota/Dota_week" + week + "_currentRankings.csv", "Val/Val_week" + week + "_currentRankings.csv", "CS/CS_week" + week + "_currentRankings.csv", "RL/RLN_week" + week + "_currentRankings.csv", "RL/RLS_week" + week + "_currentRankings.csv",  "LOL/LOLN_week" + week + "_currentRankings.csv", "LOL/LOLS_week" + week + "_currentRankings.csv"]
+inputs = [str("Ow/Ow_week" + week+ ".csv"),"R6/R6_week" + week+ ".csv","Dota/Dota_week" + week + ".csv", "Val/Val_week" + week + ".csv", "CS/CS_week" + week+ ".csv", "RL/RLN_week" + week+ ".csv", "RL/RLS_week" + week+ ".csv", "LOL/LOLN_week" + week+ ".csv", "LOL/LOLS_week" + week+ ".csv"]
+outputs = ["/Ow/Οw_week" + week+ "_currentRankings.csv","R6/R6_week" + week+ "_currentRankings.csv","Dota/Dota_week" + week + "_currentRankings.csv", "Val/Val_week" + week + "_currentRankings.csv", "CS/CS_week" + week + "_currentRankings.csv", "RL/RLN_week" + week + "_currentRankings.csv", "RL/RLS_week" + week + "_currentRankings.csv",  "LOL/LOLN_week" + week + "_currentRankings.csv", "LOL/LOLS_week" + week + "_currentRankings.csv"]
 games = ["Overwatch", "R6: Siege", "DOTA 2", "VALORANT", "CS:GO", "Rocket League", "Rocket League", "League of Legends", "League of Legends"]
 regionalBitmap = [False,False,False,False,False,True,True,True,True]
 
@@ -341,7 +341,10 @@ for i in range(len(inputs)):
     else:
         totalPointsByCurrentRanking = totalPointsByCurrentRanking.merge(temp, how = "outer", left_on = "University", right_on = "University")
 
-
+temp = pd.read_csv("data/Fortnite/Fortnite_week1_currentRankings.csv",index_col=0)
+temp = temp.rename(columns={"Points": "Fortnite"})
+temp = temp.rename_axis( index = "University" )
+totalPointsByCurrentRanking = totalPointsByCurrentRanking.merge(temp, how = "outer", left_on = "University", right_on = "University")
 
 
 

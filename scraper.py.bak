@@ -70,16 +70,13 @@ def cupScraper(cupPage, standings):
     
     r = requests.get(cupPage) 
     soup = BeautifulSoup(r.content, 'lxml')
-    c = soup.find_all("a")
-    print(c)
-    #print(teams2)
 
 
 
 w = "2"
 
-#scrapeGame("https://tournaments.nse.gg/tournaments/overwatch-winter-22/stage-1#round-5342", "data/Ow/Ow_week"+w+".csv") #camdu punters to cam
-#scrapeGame("https://tournaments.nse.gg/tournaments/rainbow-6-siege-winter-22/stage-1#round-5341", "data/R6/R6_week"+w+".csv")
+scrapeGame("https://tournaments.nse.gg/tournaments/overwatch-winter-22/stage-1#round-5342", "data/Ow/Ow_week"+w+".csv") #camdu punters to cam
+scrapeGame("https://tournaments.nse.gg/tournaments/rainbow-6-siege-winter-22/stage-1#round-5341", "data/R6/R6_week"+w+".csv")
 #scrapeGame("https://tournaments.nse.gg/tournaments/dota-2-winter-22/stage-1#round-5308", "data/Dota/Dota_week"+w+".csv")
 #scrapeGame("https://tournaments.nse.gg/tournaments/valorant-winter-22/stage-1#round-5311", "data/Val/Val_week"+w+".csv") #wattare u doing to watt
 #scrapeGame("https://tournaments.nse.gg/tournaments/csgo-winter-22/stage-1#round-5307", "data/CS/CS_week"+w+".csv") #remove bye match loser
