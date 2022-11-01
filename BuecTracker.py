@@ -280,7 +280,7 @@ def gamePointsByCurrentRankings(sourceDir, outDir, orderingAlg, regional = False
 #data directories (can update the week num to save new set of data for new week)    
 week = "2"
 inputs = [str("Ow/Ow_week" + week+ ".csv"),"R6/R6_week" + week+ ".csv","Dota/Dota_week" + week + ".csv", "Val/Val_week" + week + ".csv", "CS/CS_week" + week+ ".csv", "RL/RLN_week" + week+ ".csv", "RL/RLS_week" + week+ ".csv", "LOL/LOLN_week" + week+ ".csv", "LOL/LOLS_week" + week+ ".csv"]
-outputs = ["/Ow/Οw_week" + week+ "_currentRankings.csv","R6/R6_week" + week+ "_currentRankings.csv","Dota/Dota_week" + week + "_currentRankings.csv", "Val/Val_week" + week + "_currentRankings.csv", "CS/CS_week" + week + "_currentRankings.csv", "RL/RLN_week" + week + "_currentRankings.csv", "RL/RLS_week" + week + "_currentRankings.csv",  "LOL/LOLN_week" + week + "_currentRankings.csv", "LOL/LOLS_week" + week + "_currentRankings.csv"]
+outputs = ["/Ow/Οw_week" + week+ "_currentRankings.csv","R6/R6_week" + week+ "_currentRankings.csv","Dota/Dota_week" + week + "_currentRankings.csv", "Val/Val_week" + week + "_currentRankings.csv", "CS/CS_week" + week + "_currentRankings.csv", "RL/North/RLN_week" + week + "_currentRankings.csv", "RL/South/RLS_week" + week + "_currentRankings.csv",  "LOL/North/LOLN_week" + week + "_currentRankings.csv", "LOL/South/LOLS_week" + week + "_currentRankings.csv"]
 games = ["Overwatch", "R6: Siege", "DOTA 2", "VALORANT", "CS:GO", "Rocket League", "Rocket League", "League of Legends", "League of Legends"]
 regionalBitmap = [False,False,False,False,False,True,True,True,True]
 
