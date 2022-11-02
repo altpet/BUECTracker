@@ -6,8 +6,9 @@ from scraper import getTeams, getTeamUni, getTeamSoup
 import numpy as np
 
 def getTeams(html):#Returns table with names of teams in ranking order
-    df = pd.read_html(html, extract_links = "body")
-    d = df[-9]#gets the most recent ranking 
+    df = pd.read_html(html, extract_links = "body", match = "23:59|22:02|21:20" )
+    print(df)
+    d = pd.concat(df,ignore_index = True)#gets the most recent ranking 
     return d
 
 
@@ -47,9 +48,9 @@ def getSeedings(url, outDir):
 
 #getSeedings("https://tournaments.nse.gg/tournaments/overwatch-winter-22/stage-1#round-5384","Ow")
 #getSeedings("https://tournaments.nse.gg/tournaments/rainbow-6-siege-winter-22/stage-1#round-5341", "R6")
-#getSeedings("https://tournaments.nse.gg/tournaments/dota-2-winter-22/stage-1#round-5308", "Dota")
-#getSeedings("https://tournaments.nse.gg/tournaments/valorant-winter-22/stage-1#round-5411", "Val") #wattare u doing to watt
-#getSeedings("https://tournaments.nse.gg/tournaments/csgo-winter-22/stage-1#round-5307", "CS") #remove bye match loser
+#getSeedings("https://tournaments.nse.gg/tournaments/dota-2-winter-22/stage-1#round-5308", "Dota")  #needs reformatting
+getSeedings("https://tournaments.nse.gg/tournaments/valorant-winter-22/stage-1#round-5411", "Val") #wattare u doing to watt #needs reformatting
+#getSeedings("https://tournaments.nse.gg/tournaments/csgo-winter-22/stage-1#round-5307", "CS") #remove bye match loser #needs reformatting
 #getSeedings("https://tournaments.nse.gg/tournaments/rocket-league-winter-22-north/stage-1#round-5328", "RL/North") 
 #getSeedings("https://tournaments.nse.gg/tournaments/rocket-league-winter-22-south/stage-1#round-5330", "RL/South")
 #getSeedings("https://tournaments.nse.gg/tournaments/league-of-legends-winter-22-north/stage-1#round-5326", "LOL/North") #Washington redskins to nott trent, remove 2match bye loser
