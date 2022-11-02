@@ -1,43 +1,43 @@
-,Team Name,Team url,University,Seeds
-0,Warwick Duckz,/tournaments/dota-2-winter-22/teams/warwick-duckz/matches,University of Warwick,2.0
-1,QUBloodseekers,/tournaments/dota-2-winter-22/teams/qub-ancients/matches,Queen's University Belfast,9.0
-2,Team ACHILLESGOD...,/tournaments/dota-2-winter-22/teams/team-achillesgod-and-followers/matches,Durham University,4.0
-3,UCL Instant Reflex,/tournaments/dota-2-winter-22/teams/ucl-instant-reflex/matches,University College London,1.0
-4,LancVortex,/tournaments/dota-2-winter-22/teams/lancvortex/matches,Lancaster University,5.0
-5,UWE Game Gamers,/tournaments/dota-2-winter-22/teams/uwe-game-gamers/matches,University of the West of England,6.0
-6,Blood Bath,/tournaments/dota-2-winter-22/teams/blood-bath/matches,University of Bath,3.0
-7,Sharkie,/tournaments/dota-2-winter-22/teams/sussy-sharks-/matches,University of Sussex,11.0
-8,Team 17,,,
-9,Southampton or...,/tournaments/dota-2-winter-22/teams/southampton-or-smthing-i-guess/matches,University of Southampton,12.0
-10,Bullring of Health,/tournaments/dota-2-winter-22/teams/bullring-of-health/matches,University of Birmingham,7.0
-11,Sheffield Samurai,/tournaments/dota-2-winter-22/teams/sheffield-samurai/matches,University of Sheffield,8.0
-12,UEA BlueJays,/tournaments/dota-2-winter-22/teams/uea-bluejays/matches,University of East Anglia,23.0
-13,Hallam Hamsters,/tournaments/dota-2-winter-22/teams/hallam-hamsters/matches,Sheffield Hallam University,12.0
-14,St Andrews Dota 2,/tournaments/dota-2-winter-22/teams/st-andrews-dota-2/matches,University of St Andrews,16.0
-15,KCL Lions 2022,/tournaments/dota-2-winter-22/teams/kcl-lions-2022/matches,King's College London,14.0
-16,UCL Alacrity,/tournaments/dota-2-winter-22/teams/ucl-alacrity/matches,University College London,18.0
-17,Liverpool Arctic...,/tournaments/dota-2-winter-22/teams/liverpool-arctic-foxes/matches,University of Liverpool,19.0
-18,Swansea Storm The...,/tournaments/dota-2-winter-22/teams/swansea-storm-the-last-spirits/matches,Swansea University,15.0
-19,Team 39,,,
-20,Sand Kings...,/tournaments/dota-2-winter-22/teams/monke-kings-college-2022/matches,King's College London,34.0
-21,Match #88720 Loser,,,
-22,Blink Hexeter,/tournaments/dota-2-winter-22/teams/blink-hexeter/matches,University of Exeter,30.0
-23,Staffordshire Sixers,/tournaments/dota-2-winter-22/teams/staffordshire-sixers/matches,Staffordshire University,17.0
-24,Glasgow Glizzies,/tournaments/dota-2-winter-22/teams/universityofglasgow/matches,University of Glasgow,21.0
-25,Imperial Bonobos,/tournaments/dota-2-winter-22/teams/imperial-bonobos/matches,Imperial College London,10.0
-26,Warwick Ducklings,/tournaments/dota-2-winter-22/teams/warwick-ducklings/matches,University of Warwick,22.0
-27,Lincoln Dota,/tournaments/dota-2-winter-22/teams/lincoln-dota/matches,University of Lincoln,
-28,Oxford Dota,/tournaments/dota-2-winter-22/teams/oxford-dota/matches,Oxford University,
-29,Sheffield Shockwave,/tournaments/dota-2-winter-22/teams/sheffield-shockwave/matches,University of Sheffield,31.0
-30,Loughborough Dota,/tournaments/dota-2-winter-22/teams/loughborough-dota/matches,Loughborough University,33.0
-31,Team 63,,,
-32,Team 65,,,
-33,Sheffield Slugs,/tournaments/dota-2-winter-22/teams/sheffield-slugs/matches,University of Sheffield,28.0
-34,Cardiff Crusaders,/tournaments/dota-2-winter-22/teams/cardiff-crusaders/matches,Cardiff University,29.0
-35,Burning Iguanas,/tournaments/dota-2-winter-22/teams/burning-iguanas/matches,University of York,27.0
-36,Sheffield Shockwave,/tournaments/dota-2-winter-22/teams/sheffield-shockwave/matches,University of Sheffield,31.0
-37,LancHurricane,/tournaments/dota-2-winter-22/teams/lanchurricane/matches,Lancaster University,25.0
-38,Team 77,,,
-39,Plymouth Leviathans,/tournaments/dota-2-winter-22/teams/plymouth-leviathans/matches,University of Plymouth,39.0
-40,Team 81,,,
-41,Cockatrices,/tournaments/dota-2-winter-22/teams/cockatrices/matches,"City, University of London",32.0
+,Team Name,Team url,University,Seeds,Uni seeds
+0,Warwick Duckz,/tournaments/dota-2-winter-22/teams/warwick-duckz/matches,University of Warwick,2.0,1
+1,QUBloodseekers,/tournaments/dota-2-winter-22/teams/qub-ancients/matches,Queen's University Belfast,9.0,1
+2,Team ACHILLESGOD...,/tournaments/dota-2-winter-22/teams/team-achillesgod-and-followers/matches,Durham University,4.0,1
+3,UCL Instant Reflex,/tournaments/dota-2-winter-22/teams/ucl-instant-reflex/matches,University College London,1.0,1
+4,LancVortex,/tournaments/dota-2-winter-22/teams/lancvortex/matches,Lancaster University,5.0,1
+5,UWE Game Gamers,/tournaments/dota-2-winter-22/teams/uwe-game-gamers/matches,University of the West of England,6.0,1
+6,Blood Bath,/tournaments/dota-2-winter-22/teams/blood-bath/matches,University of Bath,3.0,1
+7,Sharkie,/tournaments/dota-2-winter-22/teams/sussy-sharks-/matches,University of Sussex,11.0,1
+8,Team 17,,,,0
+9,Southampton or...,/tournaments/dota-2-winter-22/teams/southampton-or-smthing-i-guess/matches,University of Southampton,12.0,1
+10,Bullring of Health,/tournaments/dota-2-winter-22/teams/bullring-of-health/matches,University of Birmingham,7.0,1
+11,Sheffield Samurai,/tournaments/dota-2-winter-22/teams/sheffield-samurai/matches,University of Sheffield,8.0,1
+12,UEA BlueJays,/tournaments/dota-2-winter-22/teams/uea-bluejays/matches,University of East Anglia,23.0,1
+13,Hallam Hamsters,/tournaments/dota-2-winter-22/teams/hallam-hamsters/matches,Sheffield Hallam University,12.0,1
+14,St Andrews Dota 2,/tournaments/dota-2-winter-22/teams/st-andrews-dota-2/matches,University of St Andrews,16.0,1
+15,KCL Lions 2022,/tournaments/dota-2-winter-22/teams/kcl-lions-2022/matches,King's College London,14.0,1
+16,UCL Alacrity,/tournaments/dota-2-winter-22/teams/ucl-alacrity/matches,University College London,18.0,2
+17,Liverpool Arctic...,/tournaments/dota-2-winter-22/teams/liverpool-arctic-foxes/matches,University of Liverpool,19.0,1
+18,Swansea Storm The...,/tournaments/dota-2-winter-22/teams/swansea-storm-the-last-spirits/matches,Swansea University,15.0,1
+19,Team 39,,,,0
+20,Sand Kings...,/tournaments/dota-2-winter-22/teams/monke-kings-college-2022/matches,King's College London,34.0,2
+21,Match #88720 Loser,,,,0
+22,Blink Hexeter,/tournaments/dota-2-winter-22/teams/blink-hexeter/matches,University of Exeter,30.0,1
+23,Staffordshire Sixers,/tournaments/dota-2-winter-22/teams/staffordshire-sixers/matches,Staffordshire University,17.0,1
+24,Glasgow Glizzies,/tournaments/dota-2-winter-22/teams/universityofglasgow/matches,University of Glasgow,21.0,1
+25,Imperial Bonobos,/tournaments/dota-2-winter-22/teams/imperial-bonobos/matches,Imperial College London,10.0,1
+26,Warwick Ducklings,/tournaments/dota-2-winter-22/teams/warwick-ducklings/matches,University of Warwick,22.0,2
+27,Lincoln Dota,/tournaments/dota-2-winter-22/teams/lincoln-dota/matches,University of Lincoln,,0
+28,Oxford Dota,/tournaments/dota-2-winter-22/teams/oxford-dota/matches,Oxford University,,0
+29,Sheffield Shockwave,/tournaments/dota-2-winter-22/teams/sheffield-shockwave/matches,University of Sheffield,31.0,4
+30,Loughborough Dota,/tournaments/dota-2-winter-22/teams/loughborough-dota/matches,Loughborough University,33.0,1
+31,Team 63,,,,0
+32,Team 65,,,,0
+33,Sheffield Slugs,/tournaments/dota-2-winter-22/teams/sheffield-slugs/matches,University of Sheffield,28.0,2
+34,Cardiff Crusaders,/tournaments/dota-2-winter-22/teams/cardiff-crusaders/matches,Cardiff University,29.0,1
+35,Burning Iguanas,/tournaments/dota-2-winter-22/teams/burning-iguanas/matches,University of York,27.0,1
+36,Sheffield Shockwave,/tournaments/dota-2-winter-22/teams/sheffield-shockwave/matches,University of Sheffield,31.0,4
+37,LancHurricane,/tournaments/dota-2-winter-22/teams/lanchurricane/matches,Lancaster University,25.0,2
+38,Team 77,,,,0
+39,Plymouth Leviathans,/tournaments/dota-2-winter-22/teams/plymouth-leviathans/matches,University of Plymouth,39.0,1
+40,Team 81,,,,0
+41,Cockatrices,/tournaments/dota-2-winter-22/teams/cockatrices/matches,"City, University of London",32.0,1

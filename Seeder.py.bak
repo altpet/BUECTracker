@@ -29,12 +29,16 @@ def getTeamSeed(teamSoup):
     seed = teamSoup.find("div",string = "Seeding")#
     seed = seed.next_sibling
     seed = str(seed.next_sibling)
-    print(seed)
     seed = re.findall("\d+|>-<",seed)[0]
     if seed != ">-<":
         return int(seed)
     else:
         return None
+        
+def getTeamUniSeed( uni, seed, df):
+
+    return (len(df[(df["University"]==uni) & (df["Seeds"] <= seed)]))
+
 
 def getSeedings(url, outDir, url2 = None, url3 = None):
     r = requests.get(url) 
@@ -83,16 +87,21 @@ def getSeedings(url, outDir, url2 = None, url3 = None):
     df["University"] = uniNames
     df["Seeds"] = seeds
     
-    df.columns = ["Team Name", "Team url", "University", "Seeds"]
+    uniSeeds = []
+    for index, row in df.iterrows():
+        uniSeeds.append(getTeamUniSeed(row["University"], row["Seeds"], df))
+    df["Uni seeds"] = uniSeeds
+    
+    df.columns = ["Team Name", "Team url", "University", "Seeds", "Uni seeds"]
     print(df.head(n=10))
     df.to_csv("data/"+ outDir + "/seedings.csv")  
 
 
 
-#getSeedings("https://tournaments.nse.gg/tournaments/overwatch-winter-22/stage-1#round-5384","Ow")
+getSeedings("https://tournaments.nse.gg/tournaments/overwatch-winter-22/stage-1#round-5384","Ow")
 getSeedings("https://tournaments.nse.gg/tournaments/rainbow-6-siege-winter-22/stage-1#round-5341", "R6")
 getSeedings("https://tournaments.nse.gg/tournaments/dota-2-winter-22/stage-1#round-5308", "Dota")  #needs reformatting
 getSeedings("https://tournaments.nse.gg/tournaments/valorant-winter-22/stage-1#round-5411", "Val") #wattare u doing to watt #needs reformatting
 getSeedings("https://tournaments.nse.gg/tournaments/csgo-winter-22/stage-1#round-5307", "CS") #remove bye match loser #needs reformatting
-#getSeedings("https://tournaments.nse.gg/tournaments/rocket-league-winter-22-national/week-3#round-5415","RL","https://tournaments.nse.gg/tournaments/rocket-league-winter-22-north/week-3#round-5439","https://tournaments.nse.gg/tournaments/rocket-league-winter-22-south/week-3#round-5440" ) 
-#getSeedings("https://tournaments.nse.gg/tournaments/league-of-legends-winter-22-national/week-3#round-5423", "LOL", "https://tournaments.nse.gg/tournaments/league-of-legends-winter-22-north/week-3#round-5441", "https://tournaments.nse.gg/tournaments/league-of-legends-winter-22-south/week-3#round-5442") #Washington redskins to nott trent, remove 2match bye loser
+getSeedings("https://tournaments.nse.gg/tournaments/rocket-league-winter-22-national/week-3#round-5415","RL","https://tournaments.nse.gg/tournaments/rocket-league-winter-22-north/week-3#round-5439","https://tournaments.nse.gg/tournaments/rocket-league-winter-22-south/week-3#round-5440" ) 
+getSeedings("https://tournaments.nse.gg/tournaments/league-of-legends-winter-22-national/week-3#round-5423", "LOL", "https://tournaments.nse.gg/tournaments/league-of-legends-winter-22-north/week-3#round-5441", "https://tournaments.nse.gg/tournaments/league-of-legends-winter-22-south/week-3#round-5442") #Washington redskins to nott trent, remove 2match bye loser
