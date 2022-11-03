@@ -278,9 +278,9 @@ def gamePointsByCurrentRankings(sourceDir, outDir, orderingAlg, regional = False
     
     
 #data directories (can update the week num to save new set of data for new week)    
-week = "2"
-inputs = [str("Ow/Ow_week" + week+ ".csv"),"R6/R6_week" + week+ ".csv","Dota/Dota_week" + week + ".csv", "Val/Val_week" + week + ".csv", "CS/CS_week" + week+ ".csv", "RL/RLN_week" + week+ ".csv", "RL/RLS_week" + week+ ".csv", "LOL/LOLN_week" + week+ ".csv", "LOL/LOLS_week" + week+ ".csv"]
-outputs = ["/Ow/Οw_week" + week+ "_currentRankings.csv","R6/R6_week" + week+ "_currentRankings.csv","Dota/Dota_week" + week + "_currentRankings.csv", "Val/Val_week" + week + "_currentRankings.csv", "CS/CS_week" + week + "_currentRankings.csv", "RL/North/RLN_week" + week + "_currentRankings.csv", "RL/South/RLS_week" + week + "_currentRankings.csv",  "LOL/North/LOLN_week" + week + "_currentRankings.csv", "LOL/LOLS_week" + week + "_currentRankings.csv"]
+week = "3"
+inputs = [str("Ow/Ow_week" + "2"+ ".csv"),"R6/R6_week" + "2"+ ".csv","Dota/Dota_week" + week + ".csv", "Val/Val_week" + week + ".csv", "CS/CS_week" + week+ ".csv", "RL/RLN_week" + week+ ".csv", "RL/RLS_week" + week+ ".csv", "LOL/LOLN_week" + week+ ".csv", "LOL/LOLS_week" + week+ ".csv"]
+outputs = ["/Ow/Οw_week" + week+ "_currentRankings.csv","R6/R6_week" + week+ "_currentRankings.csv","Dota/Dota_week" + week + "_currentRankings.csv", "Val/Val_week" + week + "_currentRankings.csv", "CS/CS_week" + week + "_currentRankings.csv", "RL/North/RLN_week" + week + "_currentRankings.csv", "RL/South/RLS_week" + week + "_currentRankings.csv",  "LOL/North/LOLN_week" + week + "_currentRankings.csv", "LOL/South/LOLS_week" + week + "_currentRankings.csv"]
 games = ["Overwatch", "R6: Siege", "DOTA 2", "VALORANT", "CS:GO", "Rocket League", "Rocket League", "League of Legends", "League of Legends"]
 regionalBitmap = [False,False,False,False,False,True,True,True,True]
 
@@ -291,19 +291,21 @@ for i in range(len(inputs)):
     gamePointsByCurrentRankings("data/"+inputs[i], "data/"+outputs[i], bucketTeams, regionalBitmap[i])
 
 #Calculate Points tables for each cup
-gamePointsByCurrentRankings("data/Fortnite/Fortnite Week 1.csv", "data/Fortnite/Fortnite_week1_currentRankings.csv", doNothing, False, True)
+gamePointsByCurrentRankings("data/Fortnite/Fortnite Week 2.csv", "data/Fortnite/Fortnite_finalRankings.csv", doNothing, False, True)
 
 
 
 #Sum the point tables across each game into a "total points table"
 totalPointsByCurrentRanking = pd.read_csv("data/Ow/Οw_week" + week+ "_currentRankings.csv",index_col=0)#manually change 
-for i in range(1,len(inputs)):
+totalPointsByCurrentRanking = pd.read_csv("data/R6/R6_week" + week+ "_currentRankings.csv",index_col=0)
+
+for i in range(2,len(inputs)):
     b = pd.read_csv("data/" + outputs[i],index_col=0)
     totalPointsByCurrentRanking = totalPointsByCurrentRanking.add(b,fill_value=0)
 
 
 #cups
-b = pd.read_csv("data/Fortnite/Fortnite_week1_currentRankings.csv",index_col=0)
+b = pd.read_csv("data/Fortnite/Fortnite_finalRankings.csv",index_col=0)
 totalPointsByCurrentRanking = totalPointsByCurrentRanking.add(b,fill_value=0)
 
 

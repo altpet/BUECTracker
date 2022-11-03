@@ -4,12 +4,22 @@ import pandas as pd
    
 
 
-def getTeams(html, regional = False):#Returns table with names of teams in ranking order
+def getTeams(html, regional = False, region = None):#Returns table with names of teams in ranking order
     
     if regional:
         df = pd.read_html(html, extract_links = "body", match = "Points" )
+        if region == "*":
+            for i in range (len(df)):
+                print(i)
+                print(df[i])
+                df2 = pd.DataFrame.from_dict({"Team 1": ["Team 25"], "University": [None]})
+                
+                print(df2)
+                df[i] = pd.concat([df[i],df2])
     else:
         df = pd.read_html(html, extract_links = "body", match = "Standings" ) 
+     
+    print(df)
     d = pd.concat(df,ignore_index = True)#gets the most recent ranking 
 
     return d
@@ -57,7 +67,7 @@ def scrapeGame(url, outDir, region = None):
 
 
 
-    table = getTeams(c, regional)
+    table = getTeams(c, regional, region)
     teams = table["Team 1"]#gets the teams
 
 
@@ -87,12 +97,13 @@ def scrapeGame(url, outDir, region = None):
     table["Team 1"] = table["Team 1"].apply(lambda x: x[0])
 
 
-
-    if region == "N":
+    if region != None:
+        table.to_csv("data/"+outDir+"/"+outDir+"_week"+w+".csv",columns = ["Team 1","University"])  
+    elif region == "N":
         table.to_csv("data/"+outDir+"/North/"+outDir+"N_week"+w+".csv",columns = ["Team 1","University"])
     elif region == "S":
         table.to_csv("data/"+outDir+"/South/"+outDir+"S_week"+w+".csv",columns = ["Team 1","University"])
-    else:
+    elif region == "*":
         table.to_csv("data/"+outDir+"/"+outDir+"_week"+w+".csv",columns = ["Team 1","University"])    
         
         
@@ -116,8 +127,8 @@ def cupScraper(cupPage, standings):
 #scrapeGame("https://tournaments.nse.gg/tournaments/rocket-league-winter-22-south/week-3#round-5440", "RL", "S")
 #scrapeGame("https://tournaments.nse.gg/tournaments/rocket-league-winter-22-national/week-3#round-5418", "RL", "*")
 
-scrapeGame("https://tournaments.nse.gg/tournaments/league-of-legends-winter-22-north/week-3#round-5441", "LOL", "N") #Washington redskins to nott trent, remove 2match bye loser
-scrapeGame("https://tournaments.nse.gg/tournaments/league-of-legends-winter-22-south/stage-1#round-5327", "LOL", "S")
+#scrapeGame("https://tournaments.nse.gg/tournaments/league-of-legends-winter-22-north/week-3#round-5441", "LOL", "N") #Washington redskins to nott trent, remove 2match bye loser
+#scrapeGame("https://tournaments.nse.gg/tournaments/league-of-legends-winter-22-south/week-3#round-5442", "LOL", "S")
 scrapeGame("https://tournaments.nse.gg/tournaments/league-of-legends-winter-22-national/week-3#round-5423", "LOL", "*")
 
 #todo: smash, tft matches? multiversus
