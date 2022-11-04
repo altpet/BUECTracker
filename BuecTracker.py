@@ -340,7 +340,7 @@ for g in dirs:
 #outputs[0] = "Ow/Οw_week" + "2"+ "_currentRankings.csv"
 #outputs[1] = "R6/R6_week" + "2"+ "_currentRankings.csv"
 
-games = ["Overwatch", "R6: Siege", "DOTA 2", "VALORANT", "CS:GO", "Rocket League", "League of Legends"]
+games = ["Overwatch", "R6: Siege", "DOTA 2", "CS:GO", "VALORANT" , "Rocket League", "League of Legends"]
 regionalBitmap = [False,False,False,False,False,True,True]
 
 

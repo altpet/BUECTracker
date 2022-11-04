@@ -331,14 +331,14 @@ for g in dirs:
     inputs.append(g+"/"+g+"_week"+ week + ".csv")
     
 #inputs[0] ="Ow/Ow_week" + "2"+ ".csv"
-inputs[1] = "R6/R6_week" + "2"+ ".csv"
+#inputs[1] = "R6/R6_week" + "2"+ ".csv"
     
 outputs = []
 for g in dirs:
     outputs.append(g + "/" + g + "_week" + week + "_currentRankings.csv")
     
 #outputs[0] = "Ow/Οw_week" + "2"+ "_currentRankings.csv"
-outputs[1] = "R6/R6_week" + "2"+ "_currentRankings.csv"
+#outputs[1] = "R6/R6_week" + "2"+ "_currentRankings.csv"
 
 games = ["Overwatch", "R6: Siege", "DOTA 2", "VALORANT", "CS:GO", "Rocket League", "League of Legends"]
 regionalBitmap = [False,False,False,False,False,True,True]
