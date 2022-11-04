@@ -224,13 +224,13 @@ def doNothing(df):#Don't bucket teams, just order as they are
     return buckets
     
 
-def pointsByCurrentRankings(numberOfTeams,buckets,sortedPoints, regional = False):#allocates BUEC Points, given bucketed Swiss rankings
+def pointsByCurrentRankings(numberOfTeams,buckets,sortedPoints, regional = False, regionalOffset = 0):#allocates BUEC Points, given bucketed Swiss rankings
     ellTeams = elligibleTeams(numberOfTeams)
     print(ellTeams)
     pointsSum = {}
     counter = 0
     for bucket in buckets:
-        if counter < ellTeams:#only award points to elligible teams
+        if counter < ellTeams - regionalOffset:#only award points to elligible teams
             temp = 0
             for team in bucket:#award points to teams in bucket
                 counter +=1
@@ -240,6 +240,7 @@ def pointsByCurrentRankings(numberOfTeams,buckets,sortedPoints, regional = False
                     temp += sortedPoints.pop(0)
                     if regional:
                         temp += sortedPoints.pop(0)
+            print(bucket)
             if regional:
                 temp = temp/(len(bucket)*2)#if regional, avg over 2x the size
             else:
@@ -247,25 +248,70 @@ def pointsByCurrentRankings(numberOfTeams,buckets,sortedPoints, regional = False
             for team in bucket:
                 pointsSum[team] = pointsSum.setdefault(team,0) + temp
         print(counter)    
-    return pointsSum
+    return pointsSum, sortedPoints
 
 
 
-def gamePointsByCurrentRankings(sourceDir, outDir, orderingAlg, regional = False, cup = False ):#runs the pointsByCurrentRankings algorithm
-    
-    #loading data, and making the custom points allocation table
-    df = loadDF(sourceDir)
-    numOfTeams = numberOfTeams(df)
-    if regional:#if regional leagues, we need to double the num of teams
-        numOfTeams = numOfTeams * 2
-    print(numOfTeams)
-    reducedDict = {}
-    for i in range(192):
-        reducedDict[reducedPoints[i]] = points[i]
-    sortedPoints = sortAndReducePointsTable(numOfTeams,reducedDict,pointsMultiplier(numOfTeams,cup))
+def gamePointsByCurrentRankings(sourceDir, outDir, orderingAlg,  regional = False,  cup = False ):#runs the pointsByCurrentRankings algorithm
+    if regional:
+        #loading data, and making the custom points allocation table
+        df = loadDF(sourceDir)
+        split = sourceDir.split("/")
+        split2 = split[2].split("_")
+        nDir = split[0]+"/"+split[1]+"/"+"North/"+split2[0] +"N_"+split2[1]
+        sDir = split[0]+"/"+split[1]+"/"+"South/"+split2[0] +"S_"+split2[1]
+        dfN = loadDF(nDir)
+        dfS = loadDF(sDir)
+        nNumOfTeams = numberOfTeams(dfN)
+        sNumOfTeams = numberOfTeams(dfS)
+        natNumOfTeams = numberOfTeams(df)
+        numOfTeams = nNumOfTeams+sNumOfTeams+natNumOfTeams
 
-    #allocating points given the swiss rankings
-    uniPoints = pointsByCurrentRankings(numOfTeams,orderingAlg(df),sortedPoints, regional)
+        reducedDict = {}
+        for i in range(192):
+            reducedDict[reducedPoints[i]] = points[i]
+        sortedPoints = sortAndReducePointsTable(numOfTeams,reducedDict,pointsMultiplier(numOfTeams,cup))
+        #allocating points given the swiss rankings
+        uniPoints,sortedPoints = pointsByCurrentRankings(numOfTeams,orderingAlg(df),sortedPoints, False)
+        print(uniPoints)
+        reducedDict = {}
+        for i in range(192):
+            reducedDict[reducedPoints[i]] = points[i]
+        sortedPointsS = sortAndReducePointsTable(numOfTeams+sNumOfTeams*2,reducedDict,pointsMultiplier(numOfTeams,cup))
+        for i in range(natNumOfTeams):
+            sortedPointsS.pop()
+        #allocating points given the swiss rankings
+        uniPoints2,sortedPointsS = pointsByCurrentRankings(numOfTeams+sNumOfTeams*2,orderingAlg(dfS),sortedPointsS, regional, natNumOfTeams)
+        print(uniPoints2)
+        
+        reducedDict = {}
+        for i in range(192):
+            reducedDict[reducedPoints[i]] = points[i]
+        sortedPointsN = sortAndReducePointsTable(numOfTeams+nNumOfTeams*2,reducedDict,pointsMultiplier(numOfTeams,cup))
+        for i in range(natNumOfTeams):
+            sortedPointsN.pop()
+        #allocating points given the swiss rankings
+        uniPoints3,sortedPointsN = pointsByCurrentRankings(numOfTeams+nNumOfTeams*2,orderingAlg(dfN),sortedPointsN, regional, natNumOfTeams)
+        print(uniPoints3)
+        
+        for i in uniPoints2:
+            uniPoints[i] = uniPoints.setdefault(i,0) + uniPoints2[i]
+        for i in uniPoints3:
+            uniPoints[i] = uniPoints.setdefault(i,0) + uniPoints3[i]
+    else:
+            
+        #loading data, and making the custom points allocation table
+        df = loadDF(sourceDir)
+        numOfTeams = numberOfTeams(df)
+        if regional:#if regional leagues, we need to double the num of teams
+            numOfTeams = numOfTeams * 2
+        print(numOfTeams)
+        reducedDict = {}
+        for i in range(192):
+            reducedDict[reducedPoints[i]] = points[i]
+        sortedPoints = sortAndReducePointsTable(numOfTeams,reducedDict,pointsMultiplier(numOfTeams,cup))
+        #allocating points given the swiss rankings
+        uniPoints,sortedPoints = pointsByCurrentRankings(numOfTeams,orderingAlg(df),sortedPoints, regional)
     
     #printing and saving the points table for that game
     uniPointsFrame = pd.DataFrame.from_dict(uniPoints, orient = "index", columns = ["Points"])
@@ -279,15 +325,28 @@ def gamePointsByCurrentRankings(sourceDir, outDir, orderingAlg, regional = False
     
 #data directories (can update the week num to save new set of data for new week)    
 week = "3"
-inputs = [str("Ow/Ow_week" + "2"+ ".csv"),"R6/R6_week" + "2"+ ".csv","Dota/Dota_week" + week + ".csv", "Val/Val_week" + week + ".csv", "CS/CS_week" + week+ ".csv", "RL/RLN_week" + week+ ".csv", "RL/RLS_week" + week+ ".csv", "LOL/LOLN_week" + week+ ".csv", "LOL/LOLS_week" + week+ ".csv"]
-outputs = ["/Ow/Οw_week" + week+ "_currentRankings.csv","R6/R6_week" + week+ "_currentRankings.csv","Dota/Dota_week" + week + "_currentRankings.csv", "Val/Val_week" + week + "_currentRankings.csv", "CS/CS_week" + week + "_currentRankings.csv", "RL/North/RLN_week" + week + "_currentRankings.csv", "RL/South/RLS_week" + week + "_currentRankings.csv",  "LOL/North/LOLN_week" + week + "_currentRankings.csv", "LOL/South/LOLS_week" + week + "_currentRankings.csv"]
-games = ["Overwatch", "R6: Siege", "DOTA 2", "VALORANT", "CS:GO", "Rocket League", "Rocket League", "League of Legends", "League of Legends"]
-regionalBitmap = [False,False,False,False,False,True,True,True,True]
+dirs = ["Ow","R6","Dota","CS","Val","RL","LOL"]
+inputs = []
+for g in dirs:
+    inputs.append(g+"/"+g+"_week"+ week + ".csv")
+    
+#inputs[0] ="Ow/Ow_week" + "2"+ ".csv"
+inputs[1] = "R6/R6_week" + "2"+ ".csv"
+    
+outputs = []
+for g in dirs:
+    outputs.append(g + "/" + g + "_week" + week + "_currentRankings.csv")
+    
+#outputs[0] = "Ow/Οw_week" + "2"+ "_currentRankings.csv"
+outputs[1] = "R6/R6_week" + "2"+ "_currentRankings.csv"
+
+games = ["Overwatch", "R6: Siege", "DOTA 2", "VALORANT", "CS:GO", "Rocket League", "League of Legends"]
+regionalBitmap = [False,False,False,False,False,True,True]
 
 
 
 #Calculate Points tables for each game/dataset
-for i in range(len(inputs)):
+for i in range(len(inputs)):       
     gamePointsByCurrentRankings("data/"+inputs[i], "data/"+outputs[i], bucketTeams, regionalBitmap[i])
 
 #Calculate Points tables for each cup
@@ -296,10 +355,8 @@ gamePointsByCurrentRankings("data/Fortnite/Fortnite Week 2.csv", "data/Fortnite/
 
 
 #Sum the point tables across each game into a "total points table"
-totalPointsByCurrentRanking = pd.read_csv("data/Ow/Οw_week" + week+ "_currentRankings.csv",index_col=0)#manually change 
-totalPointsByCurrentRanking = pd.read_csv("data/R6/R6_week" + week+ "_currentRankings.csv",index_col=0)
-
-for i in range(2,len(inputs)):
+totalPointsByCurrentRanking = pd.read_csv("data/Ow/Οw_week" + "2"+ "_currentRankings.csv",index_col=0)#manually change 
+for i in range(1,len(inputs)):
     b = pd.read_csv("data/" + outputs[i],index_col=0)
     totalPointsByCurrentRanking = totalPointsByCurrentRanking.add(b,fill_value=0)
 
@@ -327,7 +384,7 @@ for i in range(len(inputs)):
     temp = temp.rename(columns={"Points": games[i]})
     temp = temp.rename_axis( index = "University" )
 
-    if regionalBitmap[i]:#if regional league
+    if False:#if regional league (reduntant code)
         if case:
             #combine the North and south tables
             temp2 = pd.read_csv("data/" + outputs[i+1],index_col=0)
@@ -343,7 +400,7 @@ for i in range(len(inputs)):
     else:
         totalPointsByCurrentRanking = totalPointsByCurrentRanking.merge(temp, how = "outer", left_on = "University", right_on = "University")
 
-temp = pd.read_csv("data/Fortnite/Fortnite_week1_currentRankings.csv",index_col=0)
+temp = pd.read_csv("data/Fortnite/Fortnite_finalRankings.csv",index_col=0)
 temp = temp.rename(columns={"Points": "Fortnite"})
 temp = temp.rename_axis( index = "University" )
 totalPointsByCurrentRanking = totalPointsByCurrentRanking.merge(temp, how = "outer", left_on = "University", right_on = "University")

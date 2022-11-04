@@ -9,7 +9,7 @@ def getTeams(html, regional = False, region = None):#Returns table with names of
     if regional:
         df = pd.read_html(html, extract_links = "body", match = "Points" )
         if region == "*":
-            for i in range (len(df)):
+            for i in range (len(df)-1):
                 print(i)
                 print(df[i])
                 df2 = pd.DataFrame.from_dict({"Team 1": ["Team 25"], "University": [None]})
@@ -97,7 +97,7 @@ def scrapeGame(url, outDir, region = None):
     table["Team 1"] = table["Team 1"].apply(lambda x: x[0])
 
 
-    if region != None:
+    if region == None:
         table.to_csv("data/"+outDir+"/"+outDir+"_week"+w+".csv",columns = ["Team 1","University"])  
     elif region == "N":
         table.to_csv("data/"+outDir+"/North/"+outDir+"N_week"+w+".csv",columns = ["Team 1","University"])
