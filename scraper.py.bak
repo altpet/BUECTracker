@@ -121,11 +121,11 @@ def cupScraper(cupPage, standings):
 #scrapeGame("https://tournaments.nse.gg/tournaments/overwatch-winter-22/stage-1#round-5342", "Ow") #camdu punters to cam
 #scrapeGame("https://tournaments.nse.gg/tournaments/rainbow-6-siege-winter-22/stage-1#round-5341", "R6")
 #scrapeGame("https://tournaments.nse.gg/tournaments/dota-2-winter-22/stage-1#round-5308", "Dota")
-#scrapeGame("https://tournaments.nse.gg/tournaments/valorant-winter-22/stage-1#round-5311", "Val") #wattare u doing to watt
-scrapeGame("https://tournaments.nse.gg/tournaments/csgo-winter-22/stage-1#round-5307", "CS") #remove bye match loser
-#scrapeGame("https://tournaments.nse.gg/tournaments/rocket-league-winter-22-north/week-3#round-5439", "RL", "N") 
-#scrapeGame("https://tournaments.nse.gg/tournaments/rocket-league-winter-22-south/week-3#round-5440", "RL", "S")
-#scrapeGame("https://tournaments.nse.gg/tournaments/rocket-league-winter-22-national/week-3#round-5418", "RL", "*")
+#scrapeGame("https://tournaments.nse.gg/tournaments/valorant-winter-22/stage-1#round-5311", "Val") #hull hornets vs beehave unreported
+#scrapeGame("https://tournaments.nse.gg/tournaments/csgo-winter-22/stage-1#round-5307", "CS") #remove bye match loser
+#scrapeGame("https://tournaments.nse.gg/tournaments/rocket-league-winter-22-north/week-3#round-5439", "RL", "N") #3 unreported
+#scrapeGame("https://tournaments.nse.gg/tournaments/rocket-league-winter-22-south/week-3#round-5440", "RL", "S") #6 unreported
+#scrapeGame("https://tournaments.nse.gg/tournaments/rocket-league-winter-22-national/week-3#round-5418", "RL", "*") #2 unreported games
 
 #scrapeGame("https://tournaments.nse.gg/tournaments/league-of-legends-winter-22-north/week-3#round-5441", "LOL", "N") #Washington redskins to nott trent, remove 2match bye loser
 #scrapeGame("https://tournaments.nse.gg/tournaments/league-of-legends-winter-22-south/week-3#round-5442", "LOL", "S")
