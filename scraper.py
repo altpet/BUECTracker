@@ -1,14 +1,14 @@
 import requests
 import lxml
 import pandas as pd
-   
+from bs4 import BeautifulSoup     
 
 
-def getTeams(html, regional = False, region = None):#Returns table with names of teams in ranking order
-    
+def getTeams(html, regional = False, region = None):#Returns table of team standings
+    #regional leagues sort teams by "points" 
     if regional:
         df = pd.read_html(html, extract_links = "body", match = "Points" )
-        if region == "*":
+        if region == "*":#national leagues need dummy teams added to distinguish different divisions
             for i in range (len(df)-1):
                 print(i)
                 print(df[i])
@@ -16,11 +16,11 @@ def getTeams(html, regional = False, region = None):#Returns table with names of
                 
                 print(df2)
                 df[i] = pd.concat([df[i],df2])
-    else:
+    else:#non regional leagues sort teams by standings
         df = pd.read_html(html, extract_links = "body", match = "Standings" ) 
      
     print(df)
-    d = pd.concat(df,ignore_index = True)#gets the most recent ranking 
+    d = pd.concat(df,ignore_index = True) #the standings may be multiple different tables for each division, so we have to concat them
 
     return d
 
@@ -38,7 +38,7 @@ def getTeamLink(teamName):#gets team link, or outputs None if not a valid team
         teamLink = team["href"]
     return teamLink
 
-
+#only needed if a team isn't found in our local database
 def getTeamSoup(teamLink):#requesting the team page
     if teamLink == None:
         return None
@@ -46,7 +46,8 @@ def getTeamSoup(teamLink):#requesting the team page
     teamSoup = BeautifulSoup(r.content, 'lxml')
     return teamSoup
 
-def getTeamUni(teamSoup):
+#only needed if a team isn't found in our local database
+def getTeamUni(teamSoup):#scraping a team's university from its team page
     if teamSoup == None:
         return None
     names = str(teamSoup.find("h1", class_ = "university-title center"))
@@ -55,40 +56,45 @@ def getTeamUni(teamSoup):
     name = name.strip()
     return name
 
-from bs4 import BeautifulSoup   
-def scrapeGame(url, outDir, region = None):
+
+def scrapeGame(sourceDir, outDir, region = None):
     
-    w = "3"
-    r = requests.get(url) 
+    w = "3" #week number
+    
+    r = requests.get(sourceDir) 
     c = (r.content)
+    
+    #tag for regional leagues
     regional = False
     if region !=None:
         regional = True
 
 
-
-    table = getTeams(c, regional, region)
-    teams = table["Team 1"]#gets the teams
+    
+    table = getTeams(c, regional, region)#gets the table from the nse website of the standings for that week
+    teams = table["Team 1"]#gets the teams column of the standings table
 
 
     uniNames = []
     print (teams)
-
+    
+    #load the seedings database to quickly map team names to universities and seedings, without having to make web requests
     seedings = pd.read_csv("data/"+ outDir + "/seedings.csv", index_col = 0)
     
-    for team in teams:
     
+    #mapping all the teams in the standings to their respective university in the 
+    for team in teams:
+        #Find the team in the seedings database
         mask = seedings["Team url"] == team[1]
         currentTeam = seedings[mask]
+        #if the team is found in the seedings database, use the stored values for team uni and seed
         if (any(mask)):
             teamUni = currentTeam["University"].to_numpy()[0]
             #seed = currentTeam["Seeds"].to_numpy()[0]
             uniNames.append(teamUni)
             print(teamUni)
                     
-        else:
-
-    
+        else:#if we cant find the team in our database, scrape its university from its nse page
             teamUni = getTeamUni(getTeamSoup(team[1]))
             uniNames.append(teamUni)
             print(teamUni)
@@ -97,6 +103,7 @@ def scrapeGame(url, outDir, region = None):
     table["Team 1"] = table["Team 1"].apply(lambda x: x[0])
 
 
+    #output format is different depending on if we are dealing with a regional league
     if region == None:
         table.to_csv("data/"+outDir+"/"+outDir+"_week"+w+".csv",columns = ["Team 1","University"])  
     elif region == "N":
@@ -115,6 +122,9 @@ def cupScraper(cupPage, standings):
     r = requests.get(cupPage) 
     soup = BeautifulSoup(r.content, 'lxml')
 
+
+
+#uncomment a line when you want to scrape that game - you may need to update the URL
 
 
 
@@ -142,3 +152,51 @@ def cupScraper(cupPage, standings):
 #standings = "https://docs.google.com/spreadsheets/d/1ei_at6MfVtV5oBZwkVzPXAP1Bwd-rQCydq-FenfVI-g/gviz/tq?tqx=out:csv&sheet=LEADERBOARD"
 #cupPage = "https://nse.gg/tournaments/buec-winter-2022/nse-winter-cup-featuring-fortnite/"
 #cupScraper(cupPage,standings)
+
+#tft
+#https://docs.google.com/spreadsheets/d/1yitJXmJ2RnNvOh6LzunZVZjfgRHkg9ca9sRCeqb_CzY/gviz/tq?tqx=out:csv&sheet=LEADERBOARD
+
+
+#smash
+#https://docs.google.com/spreadsheets/d/1wg9O0Y8pGpzmZnmra5K7WKGfxBDqI4vsahuLgiR-Bu4/gviz/tq?tqx=out:csv&sheet=Week 3
+
+def teamScraper(teamLink, positionsLink, outDir):
+    w = "3"
+    d = []
+    for i in range(1,7):
+        link = teamLink + "/sort/name?page=" + str(i)
+        print(link)
+        df = pd.read_html(link, extract_links = "body", match = "Confirmed" )
+        d.append(df[0])
+
+    d = pd.concat(d,ignore_index = True)
+    teams = d["Name"]
+    print (teams)
+    
+    teams["Team"] = teams[0]
+
+    
+    positions = pd.read_csv(positionsLink, header = 0, index_col = 0, usecols = ["Standings", "Team"])
+    positions = positions.rename(columns = {0:"Team 1"})
+    positions = positions.rename(columns = {"Team":"Team 1"})
+    print("positions")
+    print(positions)
+    unis = []
+    for team in positions["Team 1"]:
+        print(team)
+        for i in teams:
+        
+            if i[0] == team:
+                print(i[0])
+                print(i[1])
+                uni = i[1]
+        unis.append(uni)
+    positions["University"] = unis
+    
+    positions["University"] = positions["University"].apply(lambda x: getTeamUni(getTeamSoup(x)))
+
+    positions.to_csv("data/"+outDir+"/"+outDir+"_week"+w+".csv",columns = ["Team 1","University"])
+
+
+#teamScraper("https://tournaments.nse.gg/tournaments/teamfight-tactics-winter-22/teams", "data/TFT/TFT Week_3_positions.csv", "TFT")
+teamScraper("https://tournaments.nse.gg/tournaments/super-smash-bros-ultimate-teams-winter-22/teams", "data/Smash/Teams/Week 3 positions.csv", "Smash/Teams")
