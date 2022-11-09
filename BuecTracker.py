@@ -136,8 +136,10 @@ def makeReducedPoints():#Make the reduced points table
     
     return reducedPoints
 
-def pointsMultiplier(numberOfTeams,cup = False, singleAndTeamsEvent = False, singlePlayerChamp = False, teamChamp = False  ):#Whether the game receives a point penalty (eg too few teams) #needs implementations for diff types of games
+def pointsMultiplier(numberOfTeams,cup = False, singleAndTeamsEvent = False, singlePlayerChamp = False, teamChamp = False, affiliate = False  ):#Whether the game receives a point penalty (eg too few teams) #needs implementations for diff types of games
     pointsMultiplier = 1
+    if numberOfTeams <16:
+        pointsMultiplier = 0
     if singlePlayerChamp:
         print("single")
         pointsMultiplier *= 1/2
@@ -154,12 +156,17 @@ def pointsMultiplier(numberOfTeams,cup = False, singleAndTeamsEvent = False, sin
         
     
     elif numberOfTeams<32:
+        print("sub 32")
         pointsMultiplier *= 2/3
         
     if cup:
         print("cup")
         pointsMultiplier *= 1/3
         
+    if affiliate:
+        print("affiliate")
+        pointsMultiplier *= 1/2
+    
     return pointsMultiplier
 
 def sortAndReducePointsTable(numberOfTeams,reducedDict,pointsMultiplier):#Creates a custom points allocation table based on the number of teams participating
@@ -175,6 +182,7 @@ def sortAndReducePointsTable(numberOfTeams,reducedDict,pointsMultiplier):#Create
     sortedPoints.sort(reverse=True)
     print(sortedPoints)
     sortedPoints = np.multiply(sortedPoints, pointsMultiplier)
+    #sortedPoints = np.ceil(sortedPoints)
     sortedPoints = sortedPoints.tolist()
     return sortedPoints
 
@@ -245,9 +253,10 @@ def pointsByCurrentRankings(numberOfTeams,buckets,sortedPoints, regional = False
                         temp += sortedPoints.pop(0)
             print(bucket)
             if regional:
-                temp = temp/(len(bucket)*2)#if regional, avg over 2x the size
+                temp = temp/(len(bucket)*2)#if regional, avg over 2x the size       
             else:
                 temp = temp/len(bucket) #average
+            temp = np.ceil(temp)#points awarded always round up
             for team in bucket:
                 pointsSum[team] = pointsSum.setdefault(team,0) + temp
         print(counter)    
@@ -255,7 +264,7 @@ def pointsByCurrentRankings(numberOfTeams,buckets,sortedPoints, regional = False
 
 
 
-def gamePointsByCurrentRankings(sourceDir, outDir, orderingAlg,  regional = False,  cup = False, singlePlayer = False, teamPlayer = False, singleAndTeams = False ):#runs the pointsByCurrentRankings algorithm
+def gamePointsByCurrentRankings(sourceDir, outDir, orderingAlg,  regional = False,  cup = False, singlePlayer = False, teamPlayer = False, singleAndTeams = False, affiliate = False):#runs the pointsByCurrentRankings algorithm
     print(sourceDir)
     if regional:
         #loading data, and making the custom points allocation table
@@ -274,14 +283,14 @@ def gamePointsByCurrentRankings(sourceDir, outDir, orderingAlg,  regional = Fals
         reducedDict = {}
         for i in range(192):
             reducedDict[reducedPoints[i]] = points[i]
-        sortedPoints = sortAndReducePointsTable(numOfTeams,reducedDict,pointsMultiplier(numOfTeams,cup, singleAndTeams, singlePlayer, teamPlayer))
+        sortedPoints = sortAndReducePointsTable(numOfTeams,reducedDict,pointsMultiplier(numOfTeams,cup, singleAndTeams, singlePlayer, teamPlayer, affiliate))
         #allocating points given the swiss rankings
         uniPoints,sortedPoints = pointsByCurrentRankings(numOfTeams,orderingAlg(df),sortedPoints, False)
         print(uniPoints)
         reducedDict = {}
         for i in range(192):
             reducedDict[reducedPoints[i]] = points[i]
-        sortedPointsS = sortAndReducePointsTable(numOfTeams+sNumOfTeams*2,reducedDict,pointsMultiplier(numOfTeams,cup, singleAndTeams, singlePlayer, teamPlayer))
+        sortedPointsS = sortAndReducePointsTable(numOfTeams+sNumOfTeams*2,reducedDict,pointsMultiplier(numOfTeams,cup, singleAndTeams, singlePlayer, teamPlayer, affiliate))
         for i in range(natNumOfTeams):
             sortedPointsS.pop()
         #allocating points given the swiss rankings
@@ -291,7 +300,7 @@ def gamePointsByCurrentRankings(sourceDir, outDir, orderingAlg,  regional = Fals
         reducedDict = {}
         for i in range(192):
             reducedDict[reducedPoints[i]] = points[i]
-        sortedPointsN = sortAndReducePointsTable(numOfTeams+nNumOfTeams*2,reducedDict,pointsMultiplier(numOfTeams,cup, singleAndTeams, singlePlayer, teamPlayer))
+        sortedPointsN = sortAndReducePointsTable(numOfTeams+nNumOfTeams*2,reducedDict,pointsMultiplier(numOfTeams,cup, singleAndTeams, singlePlayer, teamPlayer, affiliate))
         for i in range(natNumOfTeams):
             sortedPointsN.pop()
         #allocating points given the swiss rankings
@@ -313,7 +322,7 @@ def gamePointsByCurrentRankings(sourceDir, outDir, orderingAlg,  regional = Fals
         reducedDict = {}
         for i in range(192):
             reducedDict[reducedPoints[i]] = points[i]
-        sortedPoints = sortAndReducePointsTable(numOfTeams,reducedDict,pointsMultiplier(numOfTeams,cup, singleAndTeams, singlePlayer, teamPlayer))
+        sortedPoints = sortAndReducePointsTable(numOfTeams,reducedDict,pointsMultiplier(numOfTeams,cup, singleAndTeams, singlePlayer, teamPlayer, affiliate))
         #allocating points given the swiss rankings
         uniPoints,sortedPoints = pointsByCurrentRankings(numOfTeams,orderingAlg(df),sortedPoints, regional)
     
@@ -365,20 +374,24 @@ gamePointsByCurrentRankings("data/Smash/Teams/Smash/Teams_Week"+week+".csv", "da
 gamePointsByCurrentRankings("data/Fortnite/Fortnite Week 2.csv", "data/Fortnite/Fortnite_finalRankings.csv", doNothing, False, True)
 
 
+#Affiliate leagues
+#UFG
+gamePointsByCurrentRankings("data/UFG/GGS/UFG/GGS_Week"+week+".csv", "data/UFG/GGS/UFG/GGS_week"+week+"_currentRankings.csv", doNothing, False, False, True, False, False, True)
+gamePointsByCurrentRankings("data/UFG/Tekken/UFG/Tekken_Week"+week+".csv", "data/UFG/Tekken/UFG/Tekken_week"+week+"_currentRankings.csv", doNothing, False, False, True, False, False, True)
 
 
 
 
 
 #Sum the point tables across each game into a "total points table"
-totalPointsByCurrentRanking = pd.read_csv("data/Ow/Οw_week" + "2"+ "_currentRankings.csv",index_col=0)#manually change 
+totalPointsByCurrentRanking = pd.read_csv("data/" + outputs[0],index_col=0)#manually change 
 for i in range(1,len(inputs)):
     b = pd.read_csv("data/" + outputs[i],index_col=0)
     totalPointsByCurrentRanking = totalPointsByCurrentRanking.add(b,fill_value=0)
 
 #single player
 b = pd.read_csv("data/TFT/TFT_week" + week+ "_currentRankings.csv",index_col=0)
-totalPointsByCurrentRanking = totalPointsByCurrentRanking.add(b,fill_value=0)
+#totalPointsByCurrentRanking = totalPointsByCurrentRanking.add(b,fill_value=0)
 
 #smash
 b = pd.read_csv("data/Smash/Teams/Smash/Teams_week" + week+ "_currentRankings.csv",index_col=0)
@@ -388,6 +401,13 @@ totalPointsByCurrentRanking = totalPointsByCurrentRanking.add(b,fill_value=0)
 b = pd.read_csv("data/Fortnite/Fortnite_finalRankings.csv",index_col=0)
 totalPointsByCurrentRanking = totalPointsByCurrentRanking.add(b,fill_value=0)
 
+#affiliate
+#ufg
+b = pd.read_csv("data/UFG/GGS/UFG/GGS_week" + week+ "_currentRankings.csv",index_col=0)
+totalPointsByCurrentRanking = totalPointsByCurrentRanking.add(b,fill_value=0)
+
+b = pd.read_csv("data/UFG/Tekken/UFG/Tekken_week" + week+ "_currentRankings.csv",index_col=0)
+totalPointsByCurrentRanking = totalPointsByCurrentRanking.add(b,fill_value=0)
 
 
 
@@ -430,7 +450,7 @@ for i in range(len(inputs)):
 temp = pd.read_csv("data/TFT/TFT_week"+week+"_currentRankings.csv",index_col=0)
 temp = temp.rename(columns={"Points": "TFT"})
 temp = temp.rename_axis( index = "University" )
-totalPointsByCurrentRanking = totalPointsByCurrentRanking.merge(temp, how = "outer", left_on = "University", right_on = "University")
+#totalPointsByCurrentRanking = totalPointsByCurrentRanking.merge(temp, how = "outer", left_on = "University", right_on = "University")
 
 #Smash
 temp = pd.read_csv("data/Smash/Teams/Smash/Teams_week"+week+"_currentRankings.csv",index_col=0)
@@ -445,6 +465,17 @@ temp = temp.rename(columns={"Points": "Fortnite"})
 temp = temp.rename_axis( index = "University" )
 totalPointsByCurrentRanking = totalPointsByCurrentRanking.merge(temp, how = "outer", left_on = "University", right_on = "University")
 
+#affiliate
+#ufg
+temp = pd.read_csv("data/UFG/Tekken/UFG/Tekken_week"+week+"_currentRankings.csv",index_col=0)
+temp = temp.rename(columns={"Points": "Tekken 7 (UFG)"})
+temp = temp.rename_axis( index = "University" )
+totalPointsByCurrentRanking = totalPointsByCurrentRanking.merge(temp, how = "outer", left_on = "University", right_on = "University")
+
+temp = pd.read_csv("data/UFG/GGS/UFG/GGS_week"+week+"_currentRankings.csv",index_col=0)
+temp = temp.rename(columns={"Points": "Guilty Gear Strive (UFG)"})
+temp = temp.rename_axis( index = "University" )
+totalPointsByCurrentRanking = totalPointsByCurrentRanking.merge(temp, how = "outer", left_on = "University", right_on = "University")
 
 
 print(totalPointsByCurrentRanking)

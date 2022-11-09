@@ -1,115 +1,131 @@
 University,Points
-University of Warwick,2211.3155279667144
-University of Southampton,1277.735262452003
-Lancaster University,1173.5761873624222
-University of Exeter,1121.9610523747476
-Cardiff University,1047.705483595788
-Durham University,981.4198793782356
-University of Birmingham,976.1472290877523
-Staffordshire University,962.0916303351855
-University College London,930.197596624641
-Imperial College London,925.4675409390507
-Loughborough University,912.2358380615667
-Swansea University,900.0186202057628
-University of Leeds,881.8652218358607
-University of Bristol,880.1274707291266
-University of Bath,861.0021454083686
-University of Kent,857.9643963856533
-Nottingham Trent University,815.0530316957035
-University of Manchester,810.2935106177688
-University of the West of England,798.9088597543458
-University of Portsmouth,794.7208309763058
-University of Nottingham,769.5208570165466
-University of York,769.1372198685758
-Keele University,755.5183129392108
-King's College London,733.9361649541586
-University of Sussex,725.2956434782018
-University of East Anglia,671.3713302865007
-University of Plymouth,622.164539682999
-University of Lincoln,612.9508869016156
-Newcastle University,590.1542805285699
-"City, University of London",550.2006661611455
-Queen's University Belfast,531.3242681171013
-Bournemouth University,527.2051480737223
-Roehampton University,494.4351196618998
-University of Liverpool,491.56075785728694
-University of Surrey,489.17814289896705
-Heriot-Watt University,470.89223030197525
-De Montfort University,467.99267934124003
-Aston University,455.5397415106393
-Oxford University,429.538553831387
-University of Sheffield,410.7702469151246
-University of Glasgow,408.32667496937137
-Sheffield Hallam University,392.07237977555775
-University of Edinburgh,388.1948357413141
-University of Leicester,387.45899033932346
-Queen Mary University of London,377.7363873238083
-University of Reading,354.8747630992197
-University of Hertfordshire,349.6197478991597
-University of Strathclyde,349.05516114491775
-Brunel University,329.999855113519
-University of St Andrews,315.94022556390973
-"Royal Holloway, University of London",315.66465709814264
-Liverpool John Moores University,307.64431145092243
-University of Salford,306.0519954814892
-FXU (Falmouth &amp; Exeter Student's Union),286.96721851078036
-Birmingham City University,263.6511850130123
-University of Cambridge,262.38968253968255
-Coventry University,260.9605147890451
-University of Chichester,248.68680586269593
-University of Abertay Dundee,242.2511994159366
-Northumbria University,240.72269801537635
-Manchester Metropolitan University,230.45468015090486
-University of Hull,217.75344845255177
-Glasgow Caledonian University,206.59424603174602
-University of the Arts London,182.41318234610915
-University of Northampton,180.55906064809295
-University of Westminster,179.63436029097133
-Teesside University,177.21198560725102
-University of Huddersfield,172.00563640090184
-University of Essex,169.70588849574915
-University of Derby,166.69118541033436
-London School of Economics,155.1657329598506
-Leeds Beckett University,128.89285714285714
-Bath Spa University,127.09166934374511
-Bangor University,126.74292505356006
-podbotsasdas,119.8125
-University of Stirling,113.18565040051108
-University of West London,111.47568234610918
-University of South Wales,103.71739130434783
-Aberystwyth University,100.53855383138699
-"Goldsmiths, University of London",80.38854489164086
-Anglia Ruskin University,79.46120509607351
+University of Warwick,2143.0
+University of Southampton,1270.0
+Lancaster University,1176.0
+University of Exeter,1114.0
+Cardiff University,1060.0
+University of Birmingham,1023.0
+Durham University,1007.0
+Swansea University,950.0
+Imperial College London,946.0
+Staffordshire University,911.0
+University of Kent,897.0
+Loughborough University,882.0
+University of Bath,865.0
+University College London,852.0
+University of Manchester,804.0
+King's College London,792.0
+University of the West of England,788.0
+Keele University,759.0
+Nottingham Trent University,757.0
+University of Bristol,745.0
+University of Leeds,737.0
+University of Portsmouth,712.0
+University of Nottingham,705.0
+University of Sussex,704.0
+University of York,700.0
+University of Lincoln,664.0
+University of East Anglia,639.0
+Newcastle University,584.0
+Roehampton University,537.0
+"City, University of London",536.0
+Bournemouth University,534.0
+University of Liverpool,527.0
+University of Plymouth,527.0
+Queen's University Belfast,525.0
+Heriot-Watt University,498.0
+University of Surrey,494.0
+De Montfort University,486.0
+Aston University,452.0
+University of Glasgow,450.0
+University of Leicester,415.0
+University of Sheffield,393.0
+University of Edinburgh,379.0
+Queen Mary University of London,368.0
+Brunel University,360.0
+University of Reading,356.0
+University of Hertfordshire,351.0
+University of Strathclyde,340.0
+Sheffield Hallam University,336.0
+Oxford University,314.0
+University of Salford,309.0
+FXU (Falmouth &amp; Exeter Student's Union),307.0
+"Royal Holloway, University of London",306.0
+Liverpool John Moores University,299.0
+University of St Andrews,282.0
+Birmingham City University,256.0
+University of Chichester,239.0
+University of Abertay Dundee,236.0
+Northumbria University,234.0
+Coventry University,222.0
+University of Cambridge,220.0
+Manchester Metropolitan University,216.0
+University of Hull,213.0
+Glasgow Caledonian University,195.0
+Teesside University,180.0
+Leeds Beckett University,172.0
+University of the Arts London,172.0
+University of Westminster,169.0
+University of Derby,168.0
+University of Essex,163.0
+University of Huddersfield,158.0
+London School of Economics,156.0
+Bath Spa University,141.0
+University of Northampton,131.0
+University of West London,127.0
+podbotsasdas,120.0
+University of Stirling,116.0
+University of South Wales,104.0
+Aberystwyth University,101.0
+Bangor University,89.0
+University of Dundee,86.0
+Anglia Ruskin University,81.0
+"Goldsmiths, University of London",81.0
 Ulster University,76.0
-Southampton Solent University,74.21556329849014
-University of Gloucestershire,62.557566454867796
-University of Dundee,60.58573216520651
-Damon Ogg,56.0
-Qinrui Zhang,54.0
-College of Esports,43.020325203252035
-York St John University,42.50834403080873
-UK,40.0
-University of Winchester,37.261904761904766
-Chantel Parsons,28.0
-London South Bank University,25.253968253968253
-London Metropolitan University,25.253968253968253
-Kingston University,25.253968253968253
-"University for the Creative Arts, Surrey",25.253968253968253
-Cardiff Metropolitan University,25.253968253968253
-University of Sunderland,25.253968253968253
-University of Brighton,24.53404255319149
-Nabiel A,24.5
-University of Bedfordshire,24.23404255319149
-Edge Hill University,18.535714285714285
-Edinburgh Napier University,15.5
-Arts University Bournemouth,14.0
-Oxford Brookes University,13.761904761904765
-George McTavish,12.5
-Callum Robertson,12.0
-Leeds Conservatoire,11.853658536585366
-Haris Chughtai,11.0
-University of Aberdeen,9.586206896551724
-School of Oriental and African Studies,6.947368421052632
-Buckinghamshire New University,6.947368421052632
-Cameron Allford,5.0
-University of Central Lancashire,1.0
+Southampton Solent University,65.0
+University of Gloucestershire,64.0
+Reading,60.0
+Sheffield Hallam,59.0
+College of Esports,46.0
+University of Winchester,39.0
+Manchester Met,37.0
+Warwick,30.0
+Staffordshire,29.0
+Swansea,28.0
+University of Brighton,27.0
+Cardiff Metropolitan University,26.0
+London South Bank University,26.0
+UWE,26.0
+"University for the Creative Arts, Surrey",26.0
+University of Sunderland,26.0
+De Montfort,26.0
+Kingston University,26.0
+London Metropolitan University,26.0
+Birmingham,25.0
+University of Bedfordshire,24.0
+Leeds Conservatoire,24.0
+Loughborough,24.0
+Brunel,23.0
+York St John University,21.0
+Falmouth,21.0
+Edge Hill University,19.0
+Nottingham,19.0
+Tesside,15.0
+Oxford Brookes University,14.0
+Royal Holloway,14.0
+Durham,12.0
+Derby,11.0
+University of Aberdeen,10.0
+Anglia Ruskin,9.0
+Birmingham City,8.0
+School of Oriental and African Studies,7.0
+Buckinghamshire New University,7.0
+Oxford,7.0
+Sussex,6.0
+Teesside,6.0
+Imperial,6.0
+Westminster,5.0
+Abertay Dundee,3.0
+Portsmouth,1.0
+Bath Spa,1.0
+Keele,1.0

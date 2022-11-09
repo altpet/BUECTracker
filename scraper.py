@@ -59,7 +59,7 @@ def getTeamUni(teamSoup):#scraping a team's university from its team page
 
 def scrapeGame(sourceDir, outDir, region = None):
     
-    w = "3" #week number
+    w = "4" #week number
     
     r = requests.get(sourceDir) 
     c = (r.content)
@@ -160,6 +160,37 @@ def cupScraper(cupPage, standings):
 #smash
 #https://docs.google.com/spreadsheets/d/1wg9O0Y8pGpzmZnmra5K7WKGfxBDqI4vsahuLgiR-Bu4/gviz/tq?tqx=out:csv&sheet=Week 3
 
+#UFG
+#https://docs.google.com/spreadsheets/d/1o45nqHoQhwo7claNvMLbyerEq_32xPUJXPM7VJndK4w/gviz/tq?tqx=out:csv&sheet=Street Fighter V
+#https://docs.google.com/spreadsheets/d/1o45nqHoQhwo7claNvMLbyerEq_32xPUJXPM7VJndK4w/gviz/tq?tqx=out:csv&sheet=Tekken 7
+#https://docs.google.com/spreadsheets/d/1o45nqHoQhwo7claNvMLbyerEq_32xPUJXPM7VJndK4w/gviz/tq?tqx=out:csv&sheet=Guilty Gear Strive
+sheet_id = "1o45nqHoQhwo7claNvMLbyerEq_32xPUJXPM7VJndK4w"
+sheet_name = "Guilty Gear Strive"
+
+#url = f”https://docs.google.com/spreadsheets/d/{sheet_id}/gviz/tq?tqx=out:csv&sheet={sheet_name}"
+#url = f"https://docs.google.com/spreadsheets/d/{sheet_id}/gviz/tq?tqx=out:csv&sheet={sheet_name}"
+#print(url)
+#x = pd.read_csv(url)
+#x.to_csv("data/UFG/GGS/UFG/GGS_week3_positions.csv")
+
+UFG = ["UFG/GGS","UFG/Tekken", "UFG/SFV"]
+for game in UFG:
+    w="3"
+    df = pd.read_csv("data/"+game + "/" + game + "_week3_positions.csv", header = 0)
+    df.rename(columns={ df.columns[0]: "position" }, inplace = True)
+    print(df)
+    df = df[(df["position"] == df["position"] ) & ( df["University"] == df["University"])]
+
+    size = len(df)
+    
+    unis = df[["position","University"]]
+    unis.rename(columns = {"position":"Team 1"}, inplace=True)
+    print(unis)
+    unis.to_csv("data/"+game+"/"+game+"_week"+w+".csv",columns = ["Team 1","University"]) 
+
+
+
+
 def teamScraper(teamLink, positionsLink, outDir):
     w = "3"
     d = []
@@ -199,4 +230,10 @@ def teamScraper(teamLink, positionsLink, outDir):
 
 
 #teamScraper("https://tournaments.nse.gg/tournaments/teamfight-tactics-winter-22/teams", "data/TFT/TFT Week_3_positions.csv", "TFT")
-teamScraper("https://tournaments.nse.gg/tournaments/super-smash-bros-ultimate-teams-winter-22/teams", "data/Smash/Teams/Week 3 positions.csv", "Smash/Teams")
+#teamScraper("https://tournaments.nse.gg/tournaments/super-smash-bros-ultimate-teams-winter-22/teams", "data/Smash/Teams/Week 3 positions.csv", "Smash/Teams")
+
+
+
+
+#todo: remove teams with 0 wins (inelligible)
+#todo: ceil
